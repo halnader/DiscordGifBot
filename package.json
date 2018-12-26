@@ -1,0 +1,13 @@
+{
+	"name": "gifBot",
+	"version": "1.0.0",
+	"description": "gifTestV1",
+	"main": "bot.js",
+	"author": "Belite Brothers",
+	"dependencies": {
+		"discord.io": "^2.5.3",
+		"discord.js": "^11.4.2",
+		"giphy-js-sdk-core": "^1.0.6",
+		"winston": "^3.1.0"
+	}
+}
