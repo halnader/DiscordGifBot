@@ -29,10 +29,34 @@ class Status {
   }
 }
 
+class Mode {
+  constructor(mode) {
+    this._mode = mode;
+  }
+
+  mode() {
+    return this._mode;
+  }
+
+  set(newMode) {
+    this._mode = newMode; 
+  }
+
+  strMode() {
+    if(this._mode === true){
+        return 'Phrase Mode';
+    }
+    else{
+        return 'Keyword Mode';
+    }
+  }
+}
+
 let on = new Status(true);
 var messagesToIgnore = 0;
 var lowFrequencyThresh = 3;
 var highFrequencyThresh = 15;
+let phraseMode = new Mode(false);
 var messageMinSize = 2;
 
 client.on('ready', () => {
@@ -80,6 +104,10 @@ client.on('message', msg => {
                     msg.channel.send(args[2] + ' isn\'t a number');
                 }
                 break;
+            case 'changeMode':
+                phraseMode.set(!phraseMode.mode());
+                msg.channel.send('Mode changed to: ' + phraseMode.strMode());
+                break;
             case 'reset':
                 messagesToIgnore = 0;
                 msg.channel.send('Next message will be sent in : ' + messagesToIgnore + ' messages...');
@@ -90,12 +118,14 @@ client.on('message', msg => {
                                  '\n\tstop: stops GifBot' +
                                  '\n\tfreqSetHigh: sets upper frequency threshold' +
                                  '\n\tfreqSetLow: sets lower frequency threshold' +
+                                 '\n\tchangeMode: changes gif search' +
                                  '\n\treset: resets message countdown');
                 break;
             default:
                 msg.channel.send('GifBot Status: ' + on.strStatus()
                                 + '\nHigh Frequency Threshold: ' + highFrequencyThresh
                                 + '\nLow Frequency Threshold: ' + lowFrequencyThresh
+                                + '\nMode: ' + phraseMode.strMode()
                                 + '\n\nNext message will be sent in : ' + messagesToIgnore + ' messages...');
                 break;
         }
@@ -107,17 +137,22 @@ client.on('message', msg => {
         if(msg.author.username != 'GifBot' && messagesToIgnore < 1){
             messagesToIgnore = Math.floor((Math.random() * (highFrequencyThresh - lowFrequencyThresh)) + lowFrequencyThresh);
 
+            var keyword = '';
             var args = msg.content.split(' ');
-
-            var potentialKeywords = [];
-            for(i = 0; i < args.length; i++){
-                if(args[i].length >= messageMinSize){ 
-                    potentialKeywords.push(args[i]);
-                }
+            if(phraseMode.mode()){
+                keyword = args.join('+')
             }
+            else{
+                var potentialKeywords = [];
+                for(i = 0; i < args.length; i++){
+                    if(args[i].length >= messageMinSize){ 
+                        potentialKeywords.push(args[i]);
+                    }
+                }
 
-            keywordIndex = Math.floor(Math.random() * potentialKeywords.length);
-            keyword = potentialKeywords[keywordIndex];
+                var keywordIndex = Math.floor(Math.random() * potentialKeywords.length);
+                keyword = potentialKeywords[keywordIndex];
+            }
 //            msg.channel.send('This is the keyword: ' + keyword);
             giphyClient.search('gifs', {"q": keyword,
                                        "limit": 15,
