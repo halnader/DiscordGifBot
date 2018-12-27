@@ -125,7 +125,7 @@ client.on('message', msg => {
                                        "offset": 5 })
               .then((response) => {
                 var randomIndex = Math.floor(Math.random() * response.data.length);
-                const attachment = new Attachment(response.data[randomIndex].images.fixed_width.url);
+                const attachment = new Attachment(response.data[randomIndex].images.original.url);
                 msg.channel.send(attachment);
 //                msg.channel.send(response.data[randomIndex].title);
               })
