@@ -119,7 +119,7 @@ client.on('message', msg => {
             keywordIndex = Math.floor(Math.random() * potentialKeywords.length);
             keyword = potentialKeywords[keywordIndex];
 //            msg.channel.send('This is the keyword: ' + keyword);
-            giphyClient.search('stickers', {"q": keyword,
+            giphyClient.search('gifs', {"q": keyword,
                                        "limit": 15,
                                        "rating": "g",
                                        "offset": 5 })
