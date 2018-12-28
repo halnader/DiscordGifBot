@@ -156,7 +156,7 @@ client.on('message', msg => {
 //            msg.channel.send('This is the keyword: ' + keyword);
             giphyClient.search('gifs', {"q": keyword,
                                        "limit": 6,
-                                       "rating": "pg",
+                                       "rating": "g",
                                        "offset": 5 })
               .then((response) => {
                 var randomIndex = Math.floor(Math.random() * response.data.length);
