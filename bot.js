@@ -155,7 +155,7 @@ client.on('message', msg => {
             }
 //            msg.channel.send('This is the keyword: ' + keyword);
             giphyClient.search('gifs', {"q": keyword,
-                                       "limit": 15,
+                                       "limit": 6,
                                        "rating": "g",
                                        "offset": 5 })
               .then((response) => {
