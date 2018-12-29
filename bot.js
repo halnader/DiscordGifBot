@@ -16,7 +16,7 @@ class Status {
   }
 
   set(newStatus) {
-    this._status = newStatus; 
+    this._status = newStatus;
   }
 
   strStatus() {
@@ -39,7 +39,7 @@ class Mode {
   }
 
   set(newMode) {
-    this._mode = newMode; 
+    this._mode = newMode;
   }
 
   strMode() {
@@ -80,7 +80,7 @@ client.on('message', msg => {
                 if(Number.isInteger(args[2])){
                     if(args[2] > 0 && args[2] >= lowFrequencyThresh){
                         highFrequencyThresh = args[2];
-                        msg.channel.send('High Frequency Threshold: ' + highFrequencyThresh);  
+                        msg.channel.send('High Frequency Threshold: ' + highFrequencyThresh);
                     }
                     else{
                         msg.channel.send('Number: ' + args[2] + ' must be higher than low: ' + lowFrequencyThresh);
@@ -94,7 +94,7 @@ client.on('message', msg => {
                 if(Number.isInteger(args[2])){
                     if(args[2] > 0 && args[2] <= highFrequencyThresh){
                         lowFrequencyThresh = args[2];
-                        msg.channel.send('Low Frequency Threshold: ' + lowFrequencyThresh);   
+                        msg.channel.send('Low Frequency Threshold: ' + lowFrequencyThresh);
                     }
                     else{
                         msg.channel.send('Number: ' + args[2] + ' must be lower than high: ' + highFrequencyThresh);
@@ -113,7 +113,7 @@ client.on('message', msg => {
                 msg.channel.send('Next message will be sent in : ' + messagesToIgnore + ' messages...');
                 break;
             case 'help':
-                msg.channel.send('GifBot Commands:\n' + 
+                msg.channel.send('GifBot Commands:\n' +
                                  '\n\tstart: starts GifBot' +
                                  '\n\tstop: stops GifBot' +
                                  '\n\tfreqSetHigh: sets upper frequency threshold' +
@@ -140,26 +140,33 @@ client.on('message', msg => {
             var keyword = '';
             var args = msg.content.split(' ');
             if(phraseMode.mode()){
-                keyword = args.join('+')
+                keyword = args.join(' ');
             }
             else{
                 var potentialKeywords = [];
                 for(i = 0; i < args.length; i++){
-                    if(args[i].length >= messageMinSize){ 
+                    if(args[i].length >= messageMinSize){
                         potentialKeywords.push(args[i]);
                     }
                 }
 
-                var keywordIndex = Math.floor(Math.random() * potentialKeywords.length);
+                var keywordIndex = Math.floor(Math.random() * (potentialKeywords.length - 1));
                 keyword = potentialKeywords[keywordIndex];
             }
 //            msg.channel.send('This is the keyword: ' + keyword);
             giphyClient.search('gifs', {"q": keyword,
+<<<<<<< HEAD
+                                       "limit": 5,
+                                       "rating": "pg"
+                                     })
+=======
                                        "limit": 6,
-                                       "rating": "pg",
+                                       "rating": "g",
                                        "offset": 5 })
+>>>>>>> fc62af5cb1fff12419cb1f7fb2201a8d627ea180
               .then((response) => {
-                var randomIndex = Math.floor(Math.random() * response.data.length);
+                console.log(response.data[0]);
+                var randomIndex = Math.floor(Math.random() * (response.data.length - 1));
                 const attachment = new Attachment(response.data[randomIndex].images.original.url);
                 msg.channel.send(attachment);
 //                msg.channel.send(response.data[randomIndex].title);
@@ -167,8 +174,8 @@ client.on('message', msg => {
               .catch((err) => {
 //                console.log('nothing found: ' + err);
               })
-        } 
-    } 
+        }
+    }
 });
 
 client.login(process.env.token);
