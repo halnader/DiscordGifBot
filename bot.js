@@ -77,9 +77,9 @@ client.on('message', msg => {
                 msg.channel.send('GifBot Offline...');
                 break;
             case 'freqSetHigh':
-                if(Number.isInteger(args[2])){
+                if(!isNaN(args[2])){
                     if(args[2] > 0 && args[2] >= lowFrequencyThresh){
-                        highFrequencyThresh = args[2];
+                        highFrequencyThresh = +args[2];
                         msg.channel.send('High Frequency Threshold: ' + highFrequencyThresh);
                     }
                     else{
@@ -91,9 +91,9 @@ client.on('message', msg => {
                 }
                 break;
             case 'freqSetLow':
-                if(Number.isInteger(args[2])){
+                if(!isNaN(args[2]))){
                     if(args[2] > 0 && args[2] <= highFrequencyThresh){
-                        lowFrequencyThresh = args[2];
+                        lowFrequencyThresh = +args[2];
                         msg.channel.send('Low Frequency Threshold: ' + lowFrequencyThresh);
                     }
                     else{
