@@ -91,7 +91,7 @@ client.on('message', msg => {
                 }
                 break;
             case 'freqSetLow':
-                if(!isNaN(args[2]))){
+                if(!isNaN(args[2])){
                     if(args[2] > 0 && args[2] <= highFrequencyThresh){
                         lowFrequencyThresh = +args[2];
                         msg.channel.send('Low Frequency Threshold: ' + lowFrequencyThresh);
